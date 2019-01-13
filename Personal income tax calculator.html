@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Personal income tax calculator</title>
+</head>
+
+<body>
+    <!-- S 计算器 -->
+    <!-- S 个人所得税计算器 -->
+    <div class="personal-tax">
+        <div class="personal-tax-calc">
+            <div class="panel-heading">
+                <h3 class="panel-title">Personal income tax calculator</h3>
+            </div>
+            <div class="personal-tax-calc-list">
+                <div class="hd">
+                    <div class="item">
+                        <div class="item-title">pre-tax income</div>
+                        <div class="item-input">
+                            <input id="txtIncome" name="" type="text" value="">
+                            <span>￥</span></div>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Various social insurance premiums</div>
+                        <div class="item-input">
+                            <input id="txtInsure" name="" type="text" value="0.00">
+                            <span>￥</span></div>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Marking point</div>
+                        <div class="item-select">
+                            <select class="" name="" id="selBaseLine">
+                                <option value="5000" selected="selected">5000.00 </option>
+                            </select>
+                            <span>￥</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ft">
+                    <input type="submit" value="Go" id="btnCalc" href="javascript:;" onclick="btnCalc_onClick_index()">
+                    <button href="javascript:;" target="_self" id="rst" onclick="btnReset_onClick_index()">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="personal-tax-result">
+            <div class="panel-heading">
+                <h3 class="panel-title">Personal income tax calculation result</h3>
+            </div>
+            <div class="personal-tax-result-list">
+                <div class="item">
+                    <div class="item-title">Taxable income</div>
+                    <div class="item-text">
+                        <span id="lblTaxableIncome">0.00</span>￥</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Applicable tax rate</div>
+                    <div class="item-text">
+                        <span id="lblTaxRate">0.00</span>%</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Quick deduction</div>
+                    <div class="item-text">
+                        <span id="lblQuick">0.00</span>￥</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Tax payable</div>
+                    <div class="item-input">
+                        <input id="txtTax" type="text" readonly="readonly">
+                        <span>元</span></div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Real wage</div>
+                    <div class="item-input">
+                        <input id="txtRealIncome" type="text" readonly="readonly">
+                        <span>￥</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- E 个人所得税计算器 -->
+    <!-- E 计算器 -->
+</body>
+
+<script>
+    function btnCalc_onClick_index() {
+        clearResult_index();
+        var income = parseFloat(document.getElementById("txtIncome").value);
+        if (isNaN(income) || income < 0) {
+            alert("Invalid revenue amount");
+            document.getElementById("txtIncome").focus;
+            document.getElementById("txtIncome").select;
+            return;
+        }
+        document.getElementById("txtIncome").value = income.toFixed(2);
+
+        var insure = parseFloat(document.getElementById("txtInsure").value);
+        if (isNaN(insure) || insure < 0) {
+            alert("Invalid amount of social insurance premium");
+            document.getElementById("txtInsure").focus;
+            document.getElementById("txtInsure").select;
+            return;
+        }
+        document.getElementById("txtInsure").value = insure.toFixed(2);
+        var baseLine = document.getElementById("selBaseLine").value;
+
+        var taxableIncome = income - insure - baseLine;
+        if (taxableIncome <= 0) {
+            alert("You do not need to pay personal income tax!");
+            document.getElementById("txtIncome").focus;
+            document.getElementById("txtIncome").select;
+            return;
+        }
+
+        var R, Q;
+        var A = taxableIncome;
+        A = A.toFixed(2);
+        if (A <= 3000) {
+            R = 0.03;
+            Q = 0;
+        } else if (A > 3000 && A <= 12000) {
+            R = 0.1;
+            Q = 210
+        } else if (A > 12000 && A <= 25000) {
+            R = 0.2;
+            Q = 1410
+        } else if (A > 25000 && A <= 35000) {
+            R = 0.25;
+            Q = 2660
+        } else if (A > 35000 && A <= 55000) {
+            R = 0.3;
+            Q = 4410
+        } else if (A > 55000 && A <= 80000) {
+            R = 0.35;
+            Q = 7160
+        } else {
+            R = 0.45;
+            Q = 15160;
+        }
+        var tax = taxableIncome * R - Q;
+        tax = Math.round(tax * 100) / 100;
+        var realIncome = income - tax;
+        realIncome = Math.round(realIncome * 100) / 100;
+        document.getElementById("lblTaxableIncome").innerText = taxableIncome.toFixed(2);
+        document.getElementById("lblTaxRate").innerText = (R * 100).toFixed(2);
+        document.getElementById("lblQuick").innerText = Q.toFixed(2);
+        document.getElementById("txtTax").value = tax.toFixed(2);
+        document.getElementById("txtRealIncome").value = realIncome.toFixed(2);
+        document.getElementById("txtIncome").select();
+    }
+
+    function btnReset_onClick_index() {
+        clearResult_index();
+        document.getElementById("txtInsure").value = "0.00";
+        document.getElementById("selBaseLine").value = 5000.00;
+        document.getElementById("txtIncome").value = "";
+        document.getElementById("txtIncome").focus();
+        document.getElementById("txtIncome").select();
+
+    }
+
+    function clearResult_index() {
+        document.getElementById("lblTaxableIncome").innerText = "0.00";
+        document.getElementById("lblTaxRate").innerText = "0.00";
+        document.getElementById("lblQuick").innerText = "0.00";
+        document.getElementById("txtTax").value = "";
+        document.getElementById("txtRealIncome").value = "";
+    }
+</script>
+
+
+</html>

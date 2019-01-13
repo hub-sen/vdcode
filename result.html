@@ -1,0 +1,380 @@
+<!-- 基础信息开始 -->
+										<!--1-->
+										<div class="row" style="margin-top: 5px">
+											<div class="portlet box blue">
+												<div class="portlet-title">
+													<div class="caption">
+														<i class="fa fa-gift"></i>基础信息</div>
+												</div>
+											</div>
+											<div class="col-sm-3" id="vendor">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;">
+													<span style="color: red;">*</span>
+													承运商名称
+												</label>
+												<div class="col-sm-7">
+													<!-- <input type="hidden" name="vendorId" />
+													<input type="hidden" name="vendorName" id="vendorName" />
+													<select id="vendor-select2" class="form-control validate[required]">
+														<option value="">--全部--</option>
+													</select> -->
+													<select type="text" class="form-control validate[required]" id="vendor-select2"></select>
+													<input type="hidden" name="vendorName" />
+													<input type="hidden" name="vendorId" />
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;">
+													<span style="color: red;">*</span>
+													承运商类型
+												</label>
+												<div class="col-sm-7">
+													<!-- <input type="hidden" name="vendorTypeCd"/> -->
+													<select id="vendorTypeCd" name="vendorTypeCd" class="form-control" disabled="disabled">
+														<option value="">--全部--</option>
+														<option value="CD">车队</option>
+														<option value="GTSJ">个体司机</option>
+														<option value="XXB">信息部</option>
+														<option value="DBZX">单边专线</option>
+														<option value="SBZX">双边专线</option>
+														<option value="GKGS">挂靠公司</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													支付主体
+												</label>
+												<div class="col-sm-7">
+													<input type="text" readonly="readonly" class="form-control" id="paymentCompanyName" name="paymentCompanyName">
+												</div>
+											</div>
+
+										</div>
+										<!--2-->
+										<div class="row" style="margin-top: 30px">
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;">
+													<span style="color: red">*</span>
+													发车类型
+												</label>
+												<div class="col-sm-7">
+													<select name="departType" id="departType" class="form-control validate[required]">
+														<option value="1">门→门</option>
+														<option value="2">池→池</option>
+														<option value="3">门↔池</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">
+													<span style="color: red">*</span>
+													合作模式
+												</label>
+												<div class="col-sm-7">
+													<select name="cooperateModeCd" id="cooperateMode" class="form-control">
+														<option value="DB11">兜价保圈</option>
+														<option value="DB10">兜价不保圈</option>
+														<option value="DB00">不兜价不保圈</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3" style="margin-top: 10px; margin-left: -40px">
+												<span style="color: red;">（注：请先选择合作模式）</span>
+											</div>
+										</div>
+										<!--3-->
+										<div class="row" style="margin-top: 20px">
+											<div class="col-sm-5" id="route">
+												<input type="hidden" name="contractRouteId" id="contractRouteId" />
+												<label class="col-sm-3 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													合作线路
+												</label>
+												<div class="col-sm-4">
+													<select class="form-control" id="select-departCt" name="departCt" onchange="routeChange()">
+													</select>
+												</div>
+												<label class="col-sm-1 control-label">至</label>
+												<div class="col-sm-4">
+													<select class="form-control" id="select-destCt" name="destCt" onchange="routeChange()">
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-sm-2 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													合同日期
+												</label>
+												<div class="col-sm-4">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control validate[required]" name="contractStartDate" id="startTime" />
+														<span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+												<label class="col-sm-2 text-center" style="margin-right: -5px; margin-top: 9px;">至</label>
+												<div class="col-sm-4">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control validate[required]" name="contractEndDate" id="endTime" />
+														<span class="input-group-btn">
+															<button class="btn default" type="button"">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<!--4-->
+										<div class="row" style="margin-top: 15px">
+
+                                            <div class="col-sm-3">
+                                                <label class="col-sm-5 control-label" style="margin-right: -5px;">
+                                                    <span style="color: red">*</span>
+                                                    单程时效
+                                                </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control validate[required, custom[valinumber2]]" name="duration">
+                                                </div>
+                                            </div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													单边里程数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required]" name="singleMileage">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													结算周期
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required]" id="paymentcycle" name="paymentCycle">
+												</div>
+											</div>
+										</div>
+										<!--5-->
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													保圈圈数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[valinumber2]]" id="ensurecirclenum" name="ensureCircleNum">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													红利保圈车数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[valinumber6]]" id="dividendcircle" name="dividendCircleNum">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-sm-2 control-label" style="margin-right: -5px;">
+													</span>
+													实际运作开始日期
+												</label>
+												<div class="col-sm-4">
+													<input type="text" class="form-control " name="actOpDateStart" id="runStartTime" readonly="readonly" />
+												</div>
+												<label class="col-sm-2 control-label" style="margin-right: -5px;">
+													</span>
+													实际运作结束日期
+												</label>
+												<div class="col-sm-4">
+													<input type="text" class="form-control " name="actOpDateEnd" id="runStopTime" readonly="readonly" />
+												</div>
+											</div>
+
+										</div>
+										<!--6-->
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													车头数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[valinumber3]]" id="tkNum" name="tkNum">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													挂厢数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[valinumber3]]" id="trNum" name="trNum">
+												</div>
+											</div>
+
+										</div>
+										<!--基础信息结束-->
+
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">兜底结束时间</label>
+												<div class="col-sm-7">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control" name="ensureTimeEnd" />
+														<span class="input-group-btn">
+															<button class="btn default" type="button"">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+
+
+
+										</div>
+										<div class="row" style="margin-top: 15px">
+
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													押金是否收回
+												</label>
+												<div class="col-sm-7">
+													<select name="depositTaskBackCd" class="form-control validate[required]">
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px; padding-left: 0px;">
+													<span style="color: red">*</span>
+													是否有货物运输险
+												</label>
+												<div class="col-sm-7">
+													<select name="insuerGoods" class="form-control validate[required]">
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													是否安装G7
+												</label>
+												<div class="col-sm-7">
+													<select name="installedG7Cd" class="form-control validate[required]">
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													开发人
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required,custom[valiName]]" name="developer" id="developer">
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px; padding-left: 0px;">原运力会员</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" id="originalmen" name="originalMember">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<label class="col-sm-2 control-label" style="margin-right: -5px; padding-left: 0px;">原运作时间</label>
+												<div class="col-sm-4">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control" id="originalruntimestart" name="originalOpDateStart" />
+														<span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">至</label>
+												<div class="col-sm-4">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control" id="originalruntimeend" name="originalOpDateEnd" />
+														<span class="input-group-btn">
+															<button class="btn default" type="button"">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													上报城市
+												</label>
+												<div class="col-sm-7" onclick="place()">
+													<input type="text" class="form-control validate[required,custom[city2]] fmc-city-selector" id="reportcity" name="reportCt">
+												</div>
+											</div>
+
+										</div>
+
+										<!--temp-->
+										<div class="row" style="margin-top: 15px">
+
+
+
+
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">
+													<span style="color: red">*</span>
+													运作类型
+												</label>
+												<div class="col-sm-7">
+													<input type="hidden" name="contractId" id="contractId">
+													<input type="hidden" name="contractNo">
+													<select name="opTypeCd" id="capacityType" class="form-control">
+														<option value="">请选择</option>
+														<option value="TRAIL">试运作</option>
+														<option value="QY">签约合同</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">
+													<span style="color: red">*</span>
+													签约主体
+												</label>
+												<div class="col-md-7" id="zIndex">
+													<input type="hidden" name="signingProfileId" id="signingProfileId">
+													<select type="text" id="signTPC-select2" name="signingOrgName" class="form-control input-sm"></select>
+													<!-- <select type="text" class="form-control validate[required]" id="company-select2"></select>
+													<input type="hidden" name="signingProfileId" />
+													<input type="hidden" name="signingOrgName" /> -->
+												</div>
+											</div>
+
+
+
+										</div>

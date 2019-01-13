@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Countdown to get off work</title>
+</head>
+<style>
+    @import url("css/index.css");
+    @import url("css/live_style.css");
+
+    .bg-image {
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-image: url("images/background.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: .2;
+    }
+</style>
+<script src="js/vue.js"></script>
+<script src="js/index.js"></script>
+<script src="js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="js/dgtleLive.js" type="text/javascript"></script>
+<!--彩带-->
+<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="RibbonsEffect" src="js/RibbonsEffect.min.js"></script>
+
+<body>
+    <!--点点-->
+    <script src="js/canvas-nest.min.js"></script>
+    <!--背景-->
+    <div class="bg-image"></div>
+    <div class="live_thread_banner">
+        <div class="live_thread_banner_select" id="app" style="display: block;">
+            <el-time-select v-model="time" :prefix-icon="icon" @change="changeDate" :picker-options="{
+                    start: '15:00',
+                    step: '00:05',
+                    end: '20:30'
+                }"
+                :disabled=disable placeholder="Choose off work time">
+            </el-time-select>
+        </div>
+        <div class="live_thread_banner_title" style="display: none;">
+            Little master, hard work day !<br> hurry home and rest<br>ヾ(≧▽≦*)o<br>
+            私はあなたを愛している<br>
+            我爱你<br>
+            Я люблю тебя<br>
+            I love you<br>
+            Je t'aime<br>
+            나는 너를 사랑해.<br>
+            Jeg elsker deg<br>
+            Kuv hlub koj<br>
+            Szeretlek<br>
+        </div>
+        <div class="live_thread_banner_timer">
+            <div class="wrap" id="wrap" data-glivestart="" style="display: none;">
+                <div class="countdown">
+                    <h1>Countdown to get off work</h1>
+                    <div class="bloc-time hours" data-init-value="1">
+                        <span class="count-title">hours</span>
+
+                        <div class="figure hours hours-1">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+
+                        <div class="figure hours hours-2">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bloc-time min" data-init-value="0">
+                        <span class="count-title">minutes</span>
+
+                        <div class="figure min min-1">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+
+                        <div class="figure min min-2">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bloc-time sec" data-init-value="0">
+                        <span class="count-title">seconds</span>
+
+                        <div class="figure sec sec-1">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+
+                        <div class="figure sec sec-2">
+                            <span class="top"></span>
+                            <span class="top-back">
+                                <span></span>
+                            </span>
+                            <span class="bottom"></span>
+                            <span class="bottom-back">
+                                <span></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/TweenMax.min.js"></script>
+    <script src="js/countdown.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            data: {
+                time: null,
+            },
+            methods: {
+                changeDate() {
+                    start(this.time);
+                }
+            }
+        })
+
+        function start(endOfWorkTime) {
+            jQuery('.live_thread_banner_select').css('display', 'none');
+            time = new Date(new Date().toLocaleDateString() + " " + endOfWorkTime + ":00").getTime() / 1000;
+            jQuery('#wrap').attr("data-glivestart", time);
+            if (jQuery('#wrap').length) {
+                timeData(jQuery('#wrap'));
+                Countdown.init();
+            }
+            jQuery('#wrap').css('display', 'block');
+        }
+    </script>
+
+</body>
+
+
+</html>

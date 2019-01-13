@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ChronoUnitTest",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "ChronoUnitTest",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ExecutorsDemo",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "ExecutorsDemo",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Hello",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "Hello",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ShowFile",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "ShowFile",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - file",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "file",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - VerifyCode",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "VerifyCode",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - demo",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "demo",
+            "args": ""
+        }
+    ]
+}
