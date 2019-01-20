@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - TestLivaShare",
+            "request": "launch",
+            "mainClass": "TestLivaShare",
+            "projectName": "VSProject_6e43eb43"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - ChronoUnitTest",
             "request": "launch",
             "cwd": "${workspaceFolder}",
