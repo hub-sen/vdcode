@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/inc/tag.htm" />
+<#include "/macro/select.ftl"/>
+<link href="${ctx}/css/city.css?v=${appver}" rel="stylesheet" type="text/css" />
+<link href="${ctx}/css/3rd/select2/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctx}/css/webuploader.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.row {
+	padding-bottom: 3px;
+}
+/* row间距 */
+.add-rate-detail .form-body .row .form-group div {
+	padding-right: 0px;
+}
+
+.bitian-style {
+	color: red;
+	font-size: 15px;
+}
+
+.modal-content {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: none;
+}
+
+.set-format {
+	margin-top: 6px;
+	display: block;
+}
+.disabled {
+	pointer-events: none;
+}
+/*设置图片显示大小  */	
+.image {
+	width:200px;
+	height:120px;
+}
+
+.webuploader-pick {
+    padding: 0;
+    width: 54px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+.imgPicker{
+	left: 12px;
+    top: -2px;
+}
+.ellipsis {
+    white-space: nowrap;
+}
+</style>
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+	<div class="page-wrapper">
+		<#include "/inc/header.htm" />
+		<!-- BEGIN HEADER & CONTENT DIVIDER -->
+		<div class="clearfix"></div>
+		<!-- END HEADER & CONTENT DIVIDER -->
+		<!-- BEGIN CONTAINER -->
+		<div class="page-container">
+			<#include "/inc/menu.htm" />
+			<!-- BEGIN CONTENT -->
+			<div class="page-content-wrapper">
+				<!-- BEGIN CONTENT BODY -->
+				<div class="page-content">
+					<!-- BEGIN PAGE BAR -->
+					<div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li><a href="${ctx}/">主页</a><i class="fa fa-circle"></i></li>
+							<li><a href="${ctx}/tempVendorContract/tolist.do">外雇合同</a><i class="fa fa-circle"></i></li>
+							<li><span>查看</span></li>
+						</ul>
+					</div>
+
+					<div class="modal-content portlet box">
+						<div class="modal-body portlet-body">
+							<input type="hidden" id="latestResId">
+							<input type="hidden" id="contractStateCd">
+							<input type="hidden" id="tkUsageTypeCd" value="1">
+							<ul id="myTab" class="nav nav-tabs">
+								<li class="active" data-bind=true id="base-tab"><a href="#baseInfo" data-toggle="tab">基础信息</a></li>
+								<li	class="disabled" id="vehicle-tab"><a href="" id="contract" data-toggle="tab" onclick="initFileUpload();">合同信息</a></li>
+							</ul>
+							<div id="myTabContent" class="tab-content">
+								<!-- 基本信息 -->
+								<div class="tab-pane fade in active" id="baseInfo">
+									<form class="form-horizontal validate" id="baseForm">
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3">
+												<div class="form-group" id="changeMember">
+													<label class="col-md-5 control-label"><span class="bitian-style">*&nbsp;</span>会员类型</label>
+													<div class="col-md-7">
+														<input type="text" class="form-control disabled" name="memberTypeCd"/>
+														<input type="hidden" name="userTypeCd" id="memberType"/>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">
+													<span style="color: red">*</span>
+													支付主体
+												</label>
+												<div class="col-sm-7">
+													<input type="text" readonly="readonly" class="form-control" id="paymentCompanyName" name="paymentCompanyName">
+												</div>
+											</div>
+											<div class="col-md-3">
+												<input type="hidden" name="contractId" id="contractId">
+												<input type="hidden" name="contractNo">
+											</div>
+										</div>
+										<div class="row" style="margin-top: 15px" >
+											<div class="col-sm-3" id="vendor">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;"><span class="bitian-style">*&nbsp;</span>承运商名称</label>
+												<div class="col-sm-7">
+													<!-- <select id="vendor-select2" class="form-control validate[required]" onchange="memberChange()" ></select> <input type="hidden" name="vendorName" id="vendorNameVal" value="" /> <input type="hidden" name="vendorId"
+														value="" /> -->
+														<select type="text" class="form-control validate[required]" id="vendor-select2" onchange="memberChange()"></select>
+													<input type="hidden" name="vendorName" />
+													<input type="hidden" name="vendorId" />
+														
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;"><span class="bitian-style">*&nbsp;</span>承运商类型</label>
+												<div class="col-sm-7">
+												<input type="hidden" name="vendorTypeCd">
+													<select name="vendorTypeCd" id= "vendorType" class="form-control validate[required]" disabled="disabled">
+														<option value="">--请选择--</option>
+														<option value="CD">车队</option>
+														<option value="GTSJ">个体司机</option>
+														<option value="XXB">信息部</option>
+														<option value="DBZX">单边专线</option>
+														<option value="SBZX">双边专线</option>
+														<option value="GKGS">挂靠公司</option>
+													</select>
+												</div>
+											</div>
+
+
+											<div class="col-sm-5">
+												<input type="hidden" name="contractRouteId" id="contractRouteId"/>	
+												<label class="col-sm-3 control-label" style="margin-right: -5px;padding-left: 0px;"><span class="bitian-style">*&nbsp;</span>合作线路</label>
+												<div class="col-sm-4">
+													<select class="form-control" id="select-departCt" name="departCt" onchange="routeChange()">
+													</select>
+												</div>
+												<label class="col-sm-1 control-label">至</label>
+												<div class="col-sm-4">
+													<select class="form-control" id="select-destCt" name="destCt" onchange="routeChange()">
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3" id="driver">
+												<label class="col-sm-5 control-label"><span class="bitian-style">*&nbsp;</span>司机姓名</label>
+												<div class="col-sm-7">
+													<select id="driver-select2" class="form-control validate[required] "></select>
+													 <input type="hidden" name="driverName" id="driverNameVal" value="" /> 
+													 <input type="hidden" name="driverProfileId" value="" />
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="padding-left: 0px;"><span class="bitian-style">*&nbsp;</span>身份证号码</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="idNo" >
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label"><span class="bitian-style">*&nbsp;</span>车辆型号</label>
+												<div class="col-sm-7">
+													<select class="form-control validate[required]" name="truckTypeCd">
+														<option value="">请选择</option>
+														<option value="L960">9米6</option>
+														<option value="L1250">12米5</option>
+														<option value="L1650">16米5</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label"><span class="bitian-style">*&nbsp;</span>单趟价格</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required]" name="singlePrice">
+												</div>
+											</div>
+										</div>
+
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">
+													<span class="bitian-style">*&nbsp;</span>车头数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[valinumber3]]" name="tkNum" id="tkNum">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<input type="hidden" id="tkCount">
+												<input type="text" class="form-control"  name="tkNos" id="tkChoose">
+												<div id="tkNos_div" class="hidden">
+													<#if vendorContractDto.contractResRelDtos??>
+														<#list vendorContractDto.contractResRelDtos as res>
+															<#if res.resTypeCd == 'TK'>${res.resName}，</#if>
+														</#list>
+													</#if>
+												</div>
+											</div>
+
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">
+													<span class="bitian-style">*&nbsp;</span>挂厢数
+												</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required, custom[integer,min[0]]]" name="trNum" id="trNum">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<input type="hidden" id="trCount">
+												<input type="text" class="form-control"  name="trNos" id="trChoose">
+												<div id="trNos_div" class="hidden">
+													<#if vendorContractDto.contractResRelDtos??>
+														<#list vendorContractDto.contractResRelDtos as res>
+															<#if res.resTypeCd == 'TR'>${res.resName}，</#if>
+														</#list>
+													</#if>
+												</div>
+												<div id="trIds_div" class="hidden">
+											<#if vendorContractDto.contractResRelDtos??>
+												<#list vendorContractDto.contractResRelDtos as res>
+													<#if res.resTypeCd == 'TR'>${res.id}，</#if>
+												</#list>
+											</#if>
+										</div>
+										<div id="trResIds_div" class="hidden">
+											<#if vendorContractDto.contractResRelDtos??>
+												<#list vendorContractDto.contractResRelDtos as res>
+													<#if res.resTypeCd == 'TR'>${res.resId}，</#if>
+												</#list>
+											</#if>
+										</div>
+											</div>
+
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-6">
+												<label class="col-sm-3 control-label" style="margin-right: -5px;"><span class="bitian-style">*&nbsp;</span>合同日期</label>
+												<div class="col-sm-4" style="margin-top: -5px" id="start">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control validate[required]" name="contractStartDate" id="startTime" /> <span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+												<label class="col-sm-1 control-label">至</label>
+												<div class="col-sm-4" style="margin-top: -5px" id="end">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control validate[required]" name="contractEndDate" id="endTime" /> <span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;"><span class="bitian-style">*&nbsp;</span>车辆年限</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required,custom[integer]]" name="truckLife">
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;"><span class="bitian-style">*&nbsp;</span>车辆品牌</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required]" name="truckBrand">
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin-top: 15px">
+
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">是否开票</label>
+												<div class="col-sm-7">
+													<input type="hidden" /> 
+													<select class="form-control" name="invoiceFlagCd" >
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label">开票税率</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[custom[text]]" name="invoiceRate">
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label"><span class="bitian-style">*&nbsp;</span>是否有货物运输险</label>
+												<div class="col-sm-7">
+													<input type="hidden" /> 
+													<select class="form-control validate[required]" name="insuerGoods">
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label"><span></span>是否安装优卡APP</label>
+												<div class="col-sm-7">
+													<input type="hidden" /> 
+													<select class="form-control" name="installedUkappCd">
+														<option value="">--全部--</option>
+														<option value="Y">是</option>
+														<option value="N">否</option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="row" style="margin-top: 15px">
+
+											<div class="col-sm-3">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;"><span class="bitian-style">*&nbsp;</span>开发人</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control validate[required,custom[valiName]]" name="developer">
+												</div>
+											</div>
+
+											<div class="col-sm-3">
+												<label class="control-label col-md-5"><span class="bitian-style">*&nbsp;</span>上报城市</label>
+												<div class="col-md-7">
+													<input type="text" id="reportCt" class="form-control validate[custom[city2]] fmc-city-selector validate[required]" id="reportcity" name="reportCt">
+												</div>
+											</div>
+											<div class="col-sm-3" id="endTime"style="display:none">
+												<label class="control-label col-md-5">终止时间</label>
+												<div class="col-md-7">
+													<input type="text"  class="form-control" name = "endTime" >
+												</div>
+											</div>
+										</div>
+
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-3">
+												<div class="form-group">
+													<label class="col-md-5 control-label" for="title">备注</label>
+													<div class="col-md-7">
+														<textarea class="form-control validate[maxSize[200]]" name="remark" style="resize: none; height: 100px;"></textarea>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4 adjust">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;" >审核通过时间</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control" name="sbtTime" readonly>
+												</div>
+											</div>
+											<div class="col-sm-4 adjust">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">驳回原因</label>
+												<div class="col-sm-7">
+													<textarea class="form-control input-sm" name="rejectReason" readonly></textarea>
+												</div>
+											</div>
+											<div class="col-sm-4 adjust">
+												<label class="col-sm-5 control-label" style="margin-right: -5px;">驳回时间</label>
+												<div class="col-sm-7">
+													<input type="text" class="form-control " name="rejectTime" readonly>
+												</div>
+											</div>
+											<div class="col-sm-3 adjust">
+												<div class="form-group">
+													<label class="col-md-5 control-label" for="title">终止原因</label>
+													<div class="col-md-7">
+														<textarea class="form-control "  name="endReason" style="resize: none; height: 100px;" readonly></textarea>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3 adjust" >
+												<div class="form-group">
+													<label class="control-label col-md-5">终止时间</label>
+													<div class="col-md-7">
+														<input type="text"  class="form-control" name = "endTime" readonly>
+													</div>
+												</div>
+											</div>
+																				
+										</div>
+									</form>
+									<div class="row" style="margin-top: 15px">
+										<div class="col-sm-12" align="right" style="margin-left: -14px;">
+											<button class="btn sbold blue " type="button" onclick="saveBaseInfo;">保存</button>
+											<@shiro.hasPermission name="submitCheck">
+											<button class="btn sbold blue " id="submit" type="button" onclick="submitTemp()">提交审核</button>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="submitPass">
+											<button class="btn sbold blue " id="check" type="button" onclick="checkTempContract();">审核通过</button>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="reject">
+											<button class="btn  red" id="reject">
+												<a data-target="#reject-contract-model" data-toggle="modal">驳回</a>
+											</button>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="tempStop">
+											<button class="btn  red" id="stop"><a  data-target="#terminate-contract-model" data-toggle="modal">终止</a>
+											</@shiro.hasPermission>  
+										</div>
+									</div>
+									
+								</div>
+
+								<!--企业会员合同 -->
+
+								<div class="tab-pane fade" id="tempcapacityInfo">
+									<form class="form-horizontal validate" id="tempcapacityForm">
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px; text-align: left"><span class="bitian-style">*&nbsp;</span>开票电话</label>
+												<div class="col-sm-7">
+													<input type="text" name="invoiceTel" class="form-control validate[required,custom[number]]" maxlength="20">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px;text-align: left"><span class="bitian-style">*&nbsp;</span>开户行</label>
+												<div class="col-sm-7">
+													<input type="text" name="bankName" class="form-control validate[required]" maxlength="40">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px;text-align: left"><span class="bitian-style">*&nbsp;</span>账号</label>
+												<div class="col-sm-7">
+													<input type="text" name="bankCardNo" class="form-control validate[required]" maxlength="25">
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin-top: 15px">
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px; text-align: left"><span class="bitian-style">*&nbsp;</span>统一社会信用代码</label>
+												<div class="col-sm-7">
+													<input type="text" name="socialCreditCode" class="form-control validate[required]" maxlength="18">
+												</div>
+											</div>
+
+										</div>
+										<div class="form-group"></div>
+										<div class="row ">
+											<label class="col-sm-2 text-left ellipsis" style="margin-left: 15px;width:14.06667%;"><span class="bitian-style">*&nbsp;</span>证件及合同照上传</label>
+										</div>
+										<input type="hidden" name="contractFiles" id="contractFiles" value="" />
+									</form>
+											
+									<div class="row" style="margin-left:14%">
+										<#include "/resource/contract-upload.htm" />
+									</div>
+																													
+									<div class="row" style="margin-right: 50px;">
+										<div class="pull-right col-md-12 text-right">
+
+											<button class="btn sbold blue  " type="button" onclick="saveTempcapacityInfo();">确定</button>
+											
+
+											
+										</div>
+									</div>
+								</div>
+
+								<!-- 个人合同-->
+								<div class="tab-pane fade" id="tempcapacityPerInfo">
+									<form class="form-horizontal validate" id="tempcapacityPerForm">
+										<div class="row" style="margin-top: 15px">
+
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px; text-align: left"><span class="bitian-style">*&nbsp;</span>收款人</label>
+												<div class="col-sm-7">
+													<input name="payee" type="text" class="form-control validate[required,custom[valiName]]" maxlength="25">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px; text-align: left"><span class="bitian-style">*&nbsp;</span>银行卡开户银行</label>
+												<div class="col-sm-7">
+													<input name="bankName" type="text" class="form-control validate[required]" maxlength="40">
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<label class="col-sm-5 control-label ellipsis" style="margin-right: -5px; text-align: left"><span class="bitian-style">*&nbsp;</span>银行卡卡号</label>
+												<div class="col-sm-7">
+													<input name="bankCardNo" type="text" class="form-control  validate[required]" maxlength="25">
+												</div>
+											</div>
+										</div>
+										<div class="form-group"></div>
+										<div class="row">
+											<label class="col-sm-2 text-left ellipsis" style="margin-left: 10px;width:14.06667%;"><span class="bitian-style">*&nbsp;</span>证件及合同照上传</label>
+										</div>
+									</form>
+									
+									<div>
+										<#include "/resource/person-contract-upload.htm" />
+									</div>										
+									
+									<div class="row" style="margin-right: 50px;">
+										<div class="pull-right col-md-12 text-right">
+
+											<button class="btn sbold blue  " type="button" onclick="saveTempcapacityInfo();">确定</button>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END CONTENT BODY -->
+		</div>
+		<!-- END CONTENT -->
+	</div>
+	<!-- END CONTAINER -->
+
+	<!-- 驳回合同 -->
+
+	<div id="reject-contract-model" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog" style="width: 400px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="title-head">驳回原因</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal validate" id="rejectContractForm">
+						<textarea class="form-control  validate[required,maxSize[200]]" style="resize: none; width: 300px; height: 100px;" name="adjustMessage" placeholder="请输入驳回原因"></textarea>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button class=" btn-outline btn sbold blue" onclick="rejectContract();">确 定</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<!-- 终止合同 -->
+		
+	<div id="terminate-contract-model" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog" style="width: 400px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="title-head">终止原因</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal validate" id="endContractForm">									
+							<textarea class="form-control  validate[required,maxSize[200]]" style="resize: none; width:300px; height: 100px;"name="adjustMessage" placeholder="请输入终止原因"></textarea>											
+					</form>
+						
+				</div>
+				<div class="modal-footer">
+					<button  class=" btn-outline btn sbold blue" onclick="terminateContract();">确 定</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<#include "/inc/footer.htm" />
+	</div>
+	<#include "/resource/truck-list.htm"/>
+	
+	<#include "/resource/spare-truck-list.htm"/>
+	<#include "/inc/js.htm" />
+
+</body>
+<script type="text/javascript" src="${ctx}/js/base.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/fmc/fmc.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/fmc/fmc.city.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/fmc/fmc.city.data.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/fmc/fmc.util.ajax.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/3rd/select2/select2.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/3rd/select2/zh-CN.js"></script>
+<script type="text/javascript" src="${ctx}/js/ext/jquery.validationEngine-zh_CN.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/resource/search-list-common.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/utils/webuploader.min.js?v=${appver}"></script>
+
+<script type="text/javascript">
+var ctx = "${ctx}";
+var tempContractFiles = ${vendorContractDto.contractFiles!'0'};
+var memberUserTypeCd ="${vendorContractDto.userTypeCd!''}";
+$('.ellipsis').each(function(){
+	$(this).attr('title',$(this).text())
+})
+$(function(){
+	/* tkIds = getId('TK');
+	tkResIds = getResId('TK'); */
+	trIds = getId('TR');
+	trResIds = getResId('TR');
+	showContractInfo();
+	showTrAndTkPlateNo();
+	status();
+	
+	
+	
+	//为图片赋值				
+	var f =${vendorContractDto.contractFiles!'0'};
+	var type = "${vendorContractDto.userTypeCd!''}";
+	if(f !='0'){
+		$.each(f,function(index,item){
+		if(item!=null){			
+			image = $.parseJSON(item);  
+			if(image.imgType.split("_")[0] !="HTZ"&&image.imgType.split("_")[0] !="PHTZ"){
+				$("#showpic_"+image.imgType).attr('src' , ("${systemFileServer!''}" + "/" + image.url) ); 
+				$("#showpic_"+image.imgType).css("width", 200);
+	        	$("#showpic_"+image.imgType).css("height", 120);
+			}else{				
+				$("#showpic_"+image.imgType).attr('src' , ("${systemFileServer!''}" + "/" + image.url) ); 
+				$("#showpic_"+image.imgType).css("width", 200);
+	        	$("#showpic_"+image.imgType).css("height", 120);
+	        	if(index !=f.length-1){
+	        		
+	        		if(type =="B"){
+	        			$(".addMoreHTZ").click();
+	        		}else if(type =="C"){
+	        			$(".perAddMoreHTZ").click();
+	        		}
+	        		
+	        	}
+	        	
+			}
+		
+		}
+	});  
+
+	}
+});
+
+//信息显示
+function showContractInfo(){
+	//合同信息
+	if(("${vendorContractDto.userTypeCd!''}" == 'C') || ("${vendorContractDto.userTypeCd!''}" == 'B')){
+		if("${vendorContractDto.userTypeCd!''}" == 'C') {
+			$("input[name=memberTypeCd]").val("个人会员");
+			$("input[name=userTypeCd]").val("C");
+			$("#contract").attr("href", "#tempcapacityPerInfo");
+			$("input[name=payee]").val("${vendorContractDto.payee!''}");
+			$("input[name=bankName]").val("${vendorContractDto.bankName!''}");
+			$("input[name=bankCardNo]").val("${vendorContractDto.bankCardNo!''}");
+			$("#driver-select2").attr("disabled", false);
+			$("input[name=idNo]").attr("disabled", false);
+			//$("input[name=contractStartDate]").attr("disabled", true);
+			//$("input[name=contractEndDate]").attr("disabled", true);
+		}
+		if("${vendorContractDto.userTypeCd!''}" == 'B') {
+			$("input[name=memberTypeCd]").val("企业会员");
+			$("input[name=userTypeCd]").val("B");
+			$("#contract").attr("href", "#tempcapacityInfo");
+			$("input[name=invoiceTel]").val("${vendorContractDto.invoiceTel!''}");
+			$("input[name=bankName]").val("${vendorContractDto.bankName!''}");
+			$("input[name=bankCardNo]").val("${vendorContractDto.bankCardNo!''}");
+			$("input[name=socialCreditCode]").val("${vendorContractDto.socialCreditCode!''}");
+			$("#driver-select2").attr("disabled", true);
+			$("input[name=idNo]").attr("disabled", true);
+		}
+		$("#vehicle-tab").removeClass("disabled");
+		$("#base-tab").removeClass("active");
+	}
+	
+	//基本信息
+	setValToSelect2("vendor-select2","${vendorContractDto.vendorName!''}");
+	setValToSelect2("driver-select2","${vendorContractDto.driverName!''}");
+	$("input[name=paymentCompanyName]").val("${vendorContractDto.paymentCompanyName!''}");
+	$("input[name=vendorName]").val("${vendorContractDto.vendorName!''}");
+	$("#memberType").val("${vendorContractDto.userTypeCd!''}");
+	$("input[name=contractId]").val("${vendorContractDto.contractId!''}");
+	$("input[name=contractNo]").val("${vendorContractDto.contractNo!''}");
+	$("select[name=vendorTypeCd]").val("${vendorContractDto.vendorTypeCd!''}");
+	$("input[name=driverName]").val("${vendorContractDto.driverName!''}");
+	$("input[name=idNo]").val("${vendorContractDto.idNo!''}");
+	$("select[name=truckTypeCd]").val("${vendorContractDto.truckTypeCd!''}");
+	$("input[name=singlePrice]").val("${vendorContractDto.singlePrice!''}");
+	$("input[name=tkNum]").val("${vendorContractDto.tkNum!''}");
+	$("input[name=trNum]").val("${vendorContractDto.trNum!''}");
+	$("input[name=contractStartDate]").val("${(vendorContractDto.contractStartDate?string('yyyy-MM-dd'))!''}");
+	$("input[name=contractEndDate]").val("${(vendorContractDto.contractEndDate?string('yyyy-MM-dd'))!''}");
+	$("input[name=truckLife]").val("${vendorContractDto.truckLife!''}");
+	$("input[name=truckBrand]").val("${vendorContractDto.truckBrand!''}");
+	$("input[name=singlePrice]").val("${vendorContractDto.singlePrice!''}");
+	$("select[name=invoiceFlagCd]").val("${vendorContractDto.invoiceFlagCd!''}");
+	$("input[name=invoiceRate]").val("${vendorContractDto.invoiceRate!''}");
+	$("select[name=insuerGoods]").val("${vendorContractDto.insuerGoods!''}");
+	$("select[name=installedUkappCd]").val("${vendorContractDto.installedUkappCd!''}");
+	$("input[name=developer]").val("${vendorContractDto.developer!''}");
+	$("input[name=reportCt]").val("${vendorContractDto.reportCt!''}");
+	$("textarea[name=remark]").val("${vendorContractDto.remark!''}");
+	$("#contractStateCd").val("${vendorContractDto.contractStateCd!''}");
+	$("input[name=vendorId]").val("${vendorContractDto.vendorId!''}");
+	
+	 //路线	 
+	 if ("${vendorContractDto.contractRouteName!''}" != "") {
+		 setValToSelect2("select-departCt","${vendorContractDto.contractRouteName!''}".split("-")[0]);
+		 //setValToSelect2("select-destCt",((("${vendorContractDto.contractRouteName!''}".split("-"))[1]).split("("))[0]);
+		 setValToSelect2("select-destCt", "${vendorContractDto.contractRouteName!''}".split("-")[1]);
+
+	}
+	 
+	 if($("#memberType").val() == "C" && $("select[name=truckTypeCd]").val() == "L960"){
+		 $('#trNum').attr("disabled", true);
+	 }
+	
+}
+
+
+//获取车头车厢详情中的资源id集合
+function getId(resType){
+	/* if(resType == 'TK'){
+		var tkIds = $("#tkIds_div").html();
+		tkIds = tkIds.replace(/\s+/g,"");
+		return tkIds.substring(0,tkIds.length-1).split("，");
+	} */
+	if(resType == 'TR'){
+		var trIds = $("#trIds_div").html();
+		trIds = trIds.replace(/\s+/g,"");
+		return trIds.substring(0,trIds.length-1).split("，");
+	}
+}
+////获取车头车厢详情中的资源resId集合
+function getResId(resType){
+	/* if(resType == 'TK'){
+		var tkResIds = $("#tkResIds_div").html();
+		tkResIds = tkResIds.replace(/\s+/g,"");
+		return tkResIds.substring(0,tkResIds.length-1).split("，");
+	} */
+	if(resType == 'TR'){
+		var trResIds = $("#trResIds_div").html();
+		trResIds = trResIds.replace(/\s+/g,"");
+		return trResIds.substring(0,trResIds.length-1).split("，");
+	}
+}
+
+//根据状态和权限判断页面可改变内容
+
+function status(){
+	$(".adjust").hide();
+	//状态
+	var contractState  =  "${contractStateCd!''}";
+	//权限
+	var jurisdiction = "${jurisdiction!''}";
+	
+	switch(contractState)
+	{
+		case "NEW":
+			//没有运营权限
+			if(jurisdiction.indexOf("operate")<0){
+				//将所有设为禁用
+				$("#baseForm").find('input').attr('readonly', true);
+				$("#baseForm").find('input').addClass('disabled');
+				$("#baseForm").find('select').attr('disabled', true);
+				$("#baseForm").find('textarea').attr('readonly', true);
+				$("#tempcapacityForm").find('input').attr('readonly', true);
+				$("#tempcapacityForm").find('select').attr('disabled', true);				
+				$("#tempcapacityPerForm").find('input').attr('readonly', true);
+				$("#tempcapacityPerForm").find('select').attr('disabled', true);
+				$(".imgPicker").addClass("disabled");
+				$(".input-group-btn").addClass("disabled");
+				$(".date").addClass("disabled");
+				$(".fmc-city-selector").addClass("disabled");
+				$(".btn").addClass("disabled");	
+			}
+			$("#check").addClass("disabled");
+			$("#stop").addClass("disabled");
+			$("#reject").addClass("disabled");
+			$("#download").removeClass("disabled");
+			$("#personDownload").removeClass("disabled");
+			break;
+		case "SBT":
+			//将所有设为禁用
+			$("#baseForm").find('input').attr('readonly', true);
+			$("#baseForm").find('select').attr('disabled', true);
+			$("#baseForm").find('input').addClass('disabled');
+			$("#baseForm").find('textarea').attr('readonly', true);
+			$("#tempcapacityForm").find('input').attr('readonly', true);
+			$("#tempcapacityForm").find('select').attr('disabled', true);
+			$("#tempcapacityPerForm").find('input').attr('readonly', true);
+			$("#tempcapacityPerForm").find('select').attr('disabled', true);
+			$(".imgPicker").addClass("disabled");
+			$(".input-group-btn").addClass("disabled");
+			$(".date").addClass("disabled");
+			$(".fmc-city-selector").addClass("disabled");
+			$(".btn").addClass("disabled");
+			$("#check").removeClass("disabled");
+			$("#reject").removeClass("disabled");
+			$(".btn-outline").removeClass("disabled");
+			$("#download").removeClass("disabled");
+			$("#personDownload").removeClass("disabled");
+			break;
+		case "REJECT":
+			$("#submit").addClass("disabled");
+			$("#check").addClass("disabled");
+			$("#reject").addClass("disabled");
+			$("#stop").addClass("disabled");
+
+		<#if vendorContractAdjustLogDto??>
+
+		//调整合同
+		$("input[name=rejectTime]").parent().parent('.adjust').show();
+			$("textarea[name=rejectReason]").parent().parent('.adjust').show();
+
+			$("input[name=rejectTime]").val("${(vendorContractAdjustLogDto.createdTime?string('yyyy-MM-dd HH:mm:ss'))!''}");
+			$("textarea[name=rejectReason]").val("${vendorContractAdjustLogDto.adjustMessage!''}");
+
+		</#if>
+			//拥有运营权限
+			if(jurisdiction.indexOf("operate")>=0){
+
+				//驳回7天
+				//驳回合同判断
+				var date = formatDateTime(new Date());
+				var rejectTime ="${(vendorContractAdjustLogDto.createdTime?string('yyyy-MM-dd HH:mm:ss'))!''}";
+				var  differ= leadTime(date,rejectTime);
+				if(differ>7){
+					//将所有设为禁用
+					$("#baseForm").find('input').attr('readonly', true);
+					$("#baseForm").find('input').addClass('disabled');
+					$("#baseForm").find('select').attr('disabled', true);
+					$("#baseForm").find('textarea').attr('readonly', true);
+					$("#capacityForm").find('input').attr('readonly', true);
+					$("#capacityForm").find('select').attr('disabled', true);
+					$(".imgPicker").addClass("disabled");
+					$(".input-group-btn").addClass("disabled");
+					$(".date").addClass("disabled");
+					$(".fmc-city-selector").addClass("disabled");
+					$(".btn").addClass("disabled");
+				}else{
+
+					//承运商，合作路线，合作日期，车头车厢详情
+					$("#vendor").addClass("disabled");
+					$("#route").addClass("disabled");
+					$("#vendorType").attr("disabled",true);
+					$(".input-group-btn").addClass("disabled");
+					$(".date").addClass("disabled");
+					$("#select-departCt, #select-destCt").addClass("disabled");
+					$("#tkChoose, #trChoose").addClass("disabled");
+				}
+			}else{
+				//将所有设为禁用
+				$("#baseForm").find('input').attr('readonly', true);
+				$("#baseForm").find('input').addClass('disabled');
+				$("#baseForm").find('select').attr('disabled', true);
+				$("#baseForm").find('textarea').attr('readonly', true);
+				$("#capacityForm").find('input').attr('readonly', true);
+				$("#capacityForm").find('select').attr('disabled', true);
+				$(".imgPicker").addClass("disabled");
+				$(".input-group-btn").addClass("disabled");
+				$(".date").addClass("disabled");
+				$(".fmc-city-selector").addClass("disabled");
+				$(".btn").addClass("disabled");
+			}
+			$("#download").removeClass("disabled");
+			break;
+		case "PASS": case "EFFECT":
+			<#if vendorContractAdjustLogDto??>
+			//调整记录	
+			$("input[name=sbtTime]").parent().parent('.adjust').show();
+			$("input[name=sbtTime]").val("${(vendorContractAdjustLogDto.createdTime?string('yyyy-MM-dd HH:mm:ss'))!''}");
+			</#if>
+			//拥有运力权限(更改为运营权限)
+			//if(jurisdiction.indexOf("capacity")>=0){
+			if(jurisdiction.indexOf("operate")>=0){
+				//承运商，合作路线，合作日期
+				$("select[name=vendorName]").attr("disabled",true);
+				$("select[name=departCt]").attr("disabled",true);
+				$("select[name=destCt]").attr("disabled",true);
+				$("input[name=contractStartDate]").attr("disabled",true);
+				$("input[name=contractEndDate]").attr("disabled",true);
+				$(".input-group-btn").addClass("disabled");
+				$("#vendor").addClass("disabled");
+				$("#route").addClass("disabled");
+				$("#reject").addClass("disabled");
+				$("#check").addClass("disabled");
+				$("#submit").addClass("disabled");
+				$("select[name=vendorTypeCd]").attr("disabled",true);
+				$("input[name=memberTypeCd]").attr("disabled",true);
+
+			}else{
+				//将所有设为禁用				
+				$("#baseForm").find('input').attr('readonly', true);
+				$("#baseForm").find('input').addClass('disabled');
+				$("#baseForm").find('select').attr('disabled', true);
+				$("#baseForm").find('textarea').attr('readonly', true);
+				$("#tempcapacityForm").find('input').attr('readonly', true);
+				$("#tempcapacityForm").find('select').attr('disabled', true);				
+				$("#tempcapacityPerForm").find('input').attr('readonly', true);
+				$("#tempcapacityPerForm").find('select').attr('disabled', true);
+				$(".imgPicker").addClass("disabled");
+				$(".input-group-btn").addClass("disabled");
+				$(".date").addClass("disabled");
+				$(".fmc-city-selector").addClass("disabled");
+				$(".btn").addClass("disabled");	
+								
+			}
+			$("#stop").removeClass("disabled");
+			$(".btn-outline").removeClass("disabled");
+			$("#download").removeClass("disabled");
+			$("#personDownload").removeClass("disabled");
+			break;
+			
+
+		case "STOP": case "OVERDUE":
+			
+			//调整记录			
+			<#if vendorContractAdjustLogDto??>
+			$("input[name=endTime]").parent().parent().parent('.adjust').show();
+			$("textarea[name=endReason]").parent().parent().parent('.adjust').show();
+			$("input[name=endTime]").val("${(vendorContractAdjustLogDto.createdTime?string('yyyy-MM-dd HH:mm:ss'))!''}");
+			$("textarea[name=endReason]").val("${vendorContractAdjustLogDto.adjustMessage!''}");
+			</#if>
+			<#if stopAdjustLogDto??>
+			$("input[name=sbtTime]").parent().parent('.adjust').show();
+			$("input[name=sbtTime]").val("${(stopAdjustLogDto.createdTime?string('yyyy-MM-dd HH:mm:ss'))!''}");
+			</#if>
+			//将所有设为禁用
+			$("#baseForm").find('input').attr('readonly', true);
+				$("#baseForm").find('select').attr('disabled', true);
+				$("#baseForm").find('input').addClass('disabled');
+				$("#baseForm").find('textarea').attr('readonly', true);
+				$("#tempcapacityForm").find('input').attr('readonly', true);
+				$("#tempcapacityForm").find('select').attr('disabled', true);				
+				$("#tempcapacityPerForm").find('input').attr('readonly', true);
+				$("#tempcapacityPerForm").find('select').attr('disabled', true);
+				$(".imgPicker").addClass("disabled");
+				$(".input-group-btn").addClass("disabled");
+				$(".date").addClass("disabled");
+				$(".fmc-city-selector").addClass("disabled");
+				$(".btn").addClass("disabled");	
+				$("#download").removeClass("disabled");
+				$("#personDownload").removeClass("disabled");
+			break;
+	}
+}
+</script>
+<!-- <script type="text/javascript" src="${ctx}/js/resource/temp-contract.js?v=${appver}"></script> -->
+<script type="text/javascript" src="${ctx}/js/resource/temp-contract-update.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/resource/truck-list.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/resource/spare-truck-list.js?v=${appver}"></script>
+<!-- <script type="text/javascript" src="${ctx}/js/resource/temp-contract-show.js?v=${appver}"></script> -->
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/inc/tag.htm" />
+<link href="${ctx}/css/city.css?v=${appver}" rel="stylesheet" type="text/css" />
+<link href="${ctx}/css/3rd/select2/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctx}/css/3rd/zTree3.5.26/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.row {
+	padding-bottom: 3px;
+}
+/* row间距 */
+.add-rate-detail .form-body .row .form-group div {
+	padding-right: 0px;
+}
+/* .citypicker,.select2-container{
+	z-index:99999;
+} */
+
+/* 边框 */
+/* .select2-container{
+	border:1px solid #c2cad8;
+} */
+.page-search-table {
+	position: relative;
+	z-index: 0;
+}
+</style>
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+	<div class="page-wrapper">
+		<#include "/inc/header.htm" />
+		<!-- BEGIN HEADER & CONTENT DIVIDER -->
+		<div class="clearfix"></div>
+		<!-- END HEADER & CONTENT DIVIDER -->
+		<!-- BEGIN CONTAINER -->
+		<div class="page-container">
+			<#include "/inc/menu.htm" />
+			<!-- BEGIN CONTENT -->
+			<div class="page-content-wrapper">
+				<!-- BEGIN CONTENT BODY -->
+				<div class="page-content">
+					<!-- BEGIN PAGE BAR -->
+					<div class="page-bar">
+						<ul class="page-breadcrumb">
+							<li><a href="${ctx}/">主页</a><i class="fa fa-circle"></i></li>
+							<li><span>外雇合同</span></li>
+						</ul>
+					</div>
+
+					<br />
+					<div class="page-content-wapper">
+						<div class="page-table-search-wapper">
+							<div class="portlet light bordered">
+								<form action="" method="get" id="search-params" class="form-horizontal">
+									<div class="row">
+
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-sm-5 control-label text-right">承运商名称：</label>
+												<div class="col-sm-7">
+												<input type="text" name="vendorName" id="vendorNameVal" class="form-control" value="" />
+												<!-- 	<input type="hidden" name="vendorId" /> 
+													<input type="hidden" name="vendorName" />
+													<select id="vendor-select2" class="form-control">
+														<option value="">--全部--</option>
+													</select> -->
+												</div>
+											</div>
+										</div>
+
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-sm-5 control-label text-right">会员类型：</label>
+												<div class="col-sm-7">
+													<select name="memberType" class="form-control input-sm validate[required]" id="userTypeCd">
+														<option value="">--请选择--</option>
+														<option value="B">企业</option>
+														<option value="C">个人</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-sm-5 control-label text-right">合同状态：</label>
+												<div class="col-sm-7">
+													<select name="capacityState" id="contractStateCd" class="form-control input-sm validate[required]">
+														<option value="">--请选择--</option>
+														<option value="NEW" >待提交</option>
+														<option value="SBT" >待审核</option>
+														<option value="REJECT" >已驳回</option>
+														<option value="PASS" >审核通过</option>
+														<option value="EFFECT" >已生效</option>
+														<option value="STOP" >已终止</option>
+														<option value="OVERDUE" >已到期</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+											<div class="col-sm-4">
+												<div class="form-group">
+													<label class="col-sm-5 control-label text-right">合同编号：</label>
+													<div class="col-sm-7">
+														<input id="contractNo" type="text" placeholder="请输入合同编号"  class="form-control input-sm">
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="form-group">
+													<label class="col-sm-5 control-label text-right">车牌号：</label>
+													<div class="col-sm-7">
+														<input id="resName" type="text" placeholder="请输车牌号"  class="form-control input-sm">
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="form-group">
+													<label class="col-sm-5 control-label text-right">合作线路：</label>
+													<div class="col-sm-7">
+														<input id="contractRouteName" type="text" placeholder="请输入合作线路"  class="form-control input-sm">
+													</div>
+												</div>
+											</div>
+										</div>
+									
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-sm-5 control-label">签约时间</label>
+												<div class="col-sm-7">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control" name="startDate" id="startDate" /> <span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-sm-1 control-label">至</label>
+												<div class="col-sm-7">
+													<div class="input-group date date-picker" data-date="" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+														<input type="text" class="form-control" name="endDate" id="endDate" /> <span class="input-group-btn">
+															<button class="btn default" type="button">
+																<i class="fa fa-calendar"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12 text-right">
+											<button type="button" class="reload-table btn sbold green min-btn">
+												查询 <i class="fa fa-search"></i>
+											</button>
+
+											<button type="button" class="reload-table btn sbold red min-btn" onclick="clearSearch();">
+												清空 <i class="fa fa-remove"></i>
+											</button>
+										</div>
+									</div>
+
+								</form>
+							</div>
+						</div>
+						<div class="page-table-wapper">
+							<!-- BEGIN EXAMPLE TABLE PORTLET-->
+							<div class="portlet light bordered">
+								<div class="portlet-body">
+									<div class="table-toolbar">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="btn-group">
+													<@shiro.hasPermission name="/tempVendorContract/addTempContact.do">												
+													<a href="${ctx}/tempVendorContract/tocreate.do">
+																<button class="btn sbold green" id="addBtn" >
+																	<i class="fa fa-plus"></i> 创建
+																</button>
+														</a>
+													</@shiro.hasPermission>
+												</div>												
+												<@shiro.hasPermission name="/tempVendorContract/fileimport.do">
+													<div class="btn-group">
+														<button class="btn sbold blue" id="import">
+															<i class="glyphicon glyphicon-import"></i> 导入
+														</button>
+													</div>
+												</@shiro.hasPermission>
+												<div class="btn-group">
+													<@shiro.hasPermission name="/adminExport/tempContractListExport.do">
+													<button class="btn sbold blue" id="export" onclick="exportTempContract();">
+														<i class="glyphicon glyphicon-export"></i> 导出
+													</button>
+													</@shiro.hasPermission>
+												</div>
+												<div class="btn-group">
+													<@shiro.hasPermission name="/tempVendorContract/downloadTempContractTemplate.do">
+														<a href="${ctx}/importTemplate/tempContractTemplate.xlsx">
+															<button class="btn sbold blue" id="addBtn" >
+																<i class="glyphicon glyphicon-download"></i> 模板下载
+															</button>
+														</a>
+													</@shiro.hasPermission>
+												</div>		
+											</div>
+										</div>
+
+									</div>
+									<div id="list-dt">
+										<div class="dataTables_wrapper no-footer">
+											<div class="table-scrollable auto min">
+												<table class="data-table-min table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer">
+												</table>
+											</div>
+											<div class="dataTables-pageNav"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END EXAMPLE TABLE PORTLET-->
+						</div>
+					</div>
+				</div>
+				<!-- END CONTENT BODY -->
+			</div>
+			<!-- END CONTENT -->
+		</div>
+		<!-- END CONTAINER -->
+		<#include "/inc/footer.htm" />
+	</div>
+	
+	
+	<!-- 上传模板-->
+	<div id="dialog_temp_import" class="modal fade" role="basic" aria-hidden="true">
+		<div class="modal-dialog" style="width: 700px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="title">上传Excel</h4>
+				</div>
+				<form method="POST"  enctype="multipart/form-data" id="importForm" action="/tempcapacity/fileimport.do">
+					<div class="modal-body">
+						<input type="file" id="tempFileUpload" name="file">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn sbold red" onclick="$('#dialog_temp_import').modal('hide');">
+							取消
+						</button>
+						<button type="button" class="btn sbold green" id="import-button">
+							上传
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+
+
+</body>
+<#include "/inc/js.htm" />
+<script type="text/javascript" src="${ctx}/js/base.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/3rd/select2/select2.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/3rd/select2/zh-CN.js"></script>
+<script type="text/javascript" src="${ctx}/js/ext/jquery.validationEngine-zh_CN.js?v=${appver}"></script>
+<script type="text/javascript" src="${ctx}/js/resource/temp-contract-list.js?v=${appver}"></script>
+</html>
