@@ -1,0 +1,19 @@
+{
+  "body": {
+    "routeId": 249,
+    "departBranchId": null,
+    "departCt": 510600,
+    "usageType": 1,
+    "occupyFromDate": 1553839241000,
+    "occupyToDate": 1553839243000,
+    "plateNo": "森H12345",
+    "resSignTypeCd": "CP",
+    "shiftNo": "outPlan",
+    "refNo": null,
+    "operationType": null
+  },
+  "productCode": "SG3-WEB",
+  "appCode": "SG3-WEB",
+  "sign": null,
+  "version": null
+}
