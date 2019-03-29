@@ -1,6 +1,6 @@
 @echo off
 :: idea
-start D:\JetBrains\"IntelliJ IDEA"\bin\idea64.exe
+start D:\JetBrains\"IntelliJ IDEA 2019.1"\bin\idea64.exe
 :: webstorm
 :: start D:\JetBrains\WebStorm\bin\webstorm64.exe
 :: chrome
