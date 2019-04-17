@@ -1,6 +1,14 @@
 {
     "configurations": [
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "sourceMaps": true,
+            "file": "${workspaceFolder}/demo/index.html"
+        },
+
+        {
             "type": "java",
             "name": "CodeLens (Launch) - TestLivaShare",
             "request": "launch",
