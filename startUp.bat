@@ -1,6 +1,8 @@
 @echo off
 :: idea
 start D:\JetBrains\"IntelliJ IDEA 2019.1"\bin\idea64.exe
+:: datagrip
+start D:\JetBrains\"DataGrip 2019.1"\bin\datagrip64.exe
 :: webstorm
 :: start D:\JetBrains\WebStorm\bin\webstorm64.exe
 :: chrome
@@ -16,7 +18,13 @@ start C:\"Program Files"\"Microsoft Office"\Root\Office16\ONENOTE.EXE
 :: cloudmusic
 start D:\Netease\CloudMusic\cloudmusic.exe
 :: Foxmail
-start E:\"Program Files"\"Foxmail 7.2"\Foxmail.exe
+start D:\"Foxmail 7.2"\Foxmail.exe
 :: Xshell
 start D:\NetSarang\"Xshell 6"\Xshell.exe
+:: TeamViewer
+start D:\TeamViewer\TeamViewer.exe
+:: TencentDocs
+start D:\Tencent\TencentDocs\TencentDocs.exe
+:: Postman
+start C:\Users\TDH\AppData\Local\Postman\Update.exe --processStart "Postman.exe"
 exit
