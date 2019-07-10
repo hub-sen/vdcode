@@ -5,6 +5,8 @@ start D:\JetBrains\"IntelliJ IDEA 2019.1"\bin\idea64.exe
 start D:\JetBrains\"DataGrip 2019.1"\bin\datagrip64.exe
 :: webstorm
 :: start D:\JetBrains\WebStorm\bin\webstorm64.exe
+:: ubuntuServer
+start E:\"Virtual Machines"\UbuntuServer\UbuntuServer.vmx
 :: chrome
 start C:\"Program Files (x86)"\Google\Chrome\Application\chrome.exe
 :: WXWork
@@ -21,10 +23,10 @@ start D:\Netease\CloudMusic\cloudmusic.exe
 start D:\"Foxmail 7.2"\Foxmail.exe
 :: Xshell
 start D:\NetSarang\"Xshell 6"\Xshell.exe
-:: TeamViewer
-start D:\TeamViewer\TeamViewer.exe
 :: TencentDocs
 start D:\Tencent\TencentDocs\TencentDocs.exe
 :: Postman
 start C:\Users\TDH\AppData\Local\Postman\Update.exe --processStart "Postman.exe"
+:: SunloginClient
+start D:\Oray\SunLogin\SunloginClient\SunloginClient.exe
 exit
