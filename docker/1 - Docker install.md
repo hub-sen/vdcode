@@ -2,7 +2,7 @@
 
 ## 1.install (CentOS 7)
 
-Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。通过 `uname -r` 命令查看你当前的内核版本.
+Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的 CentOS 版本是否支持 Docker 。通过 `uname -r` 命令查看你当前的内核版本.
 
 从 2017 年 3 月开始 docker 在原来的基础上分为两个分支版本: Docker CE 和 Docker EE。
 Docker CE 即社区免费版，Docker EE 即企业版，强调安全，但需付费使用。
@@ -34,31 +34,31 @@ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 ```
 
-- 更新yum缓存:
+- 更新 yum 缓存:
 
 ```bash
 sudo yum makecache fast
 ```
 
-- 安装Docker-ce:
+- 安装 Docker-ce:
 
 ```bash
 sudo yum -y install docker-ce
 ```
 
-- 启动Docker后台服务:
+- 启动 Docker 后台服务:
 
 ```bash
 sudo systemctl start docker
 ```
 
-- 测试运行hello-world:
+- 测试运行 hello-world:
 
 ```bash
 docker run hello-world
 ```
 
-**由于本地没有hello-world这个镜像，所以会下载一个hello-world的镜像，并在容器内运行。*
+\*_由于本地没有 hello-world 这个镜像，所以会下载一个 hello-world 的镜像，并在容器内运行。_
 
 ---
 
@@ -78,7 +78,7 @@ docker run hello-world
 
 ---
 
-## 删除Docker CE
+## 删除 Docker CE
 
 ```bash
 sudo yum remove docker-ce

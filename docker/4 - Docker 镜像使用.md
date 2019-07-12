@@ -17,12 +17,12 @@
 
 - REPIOSITORY : 表示镜像的仓库源
 - TAG: 镜像的标签
-- IMAGE ID: 镜像ID
+- IMAGE ID: 镜像 ID
 - CREATED: 镜像创建时间
 - SIZE: 镜像大小
 
 同一个仓库源可以有多个 TAG , 代表这个仓库源的不同版本,如 ubuntu 仓库源里, 有 15.10 , 14.04 等多个不同的版本,使用 REPOSITORY:TAG 来定义不同的镜像.
-所以,如果要使用版本为15.10的 ubuntu 系统镜像来运行容器时,命令如下:
+所以,如果要使用版本为 15.10 的 ubuntu 系统镜像来运行容器时,命令如下:
 
 ```bash
 docker run -t -i ubuntu:15.10 /bin/bash
@@ -50,7 +50,7 @@ docker run -t -i ubuntu:14.04 /bin/bash
 
 ## 查找镜像
 
-可以从 Docker Hub 网站来搜索镜像, Docker Hub 网址为: <https://hub.docker.com/> 也可以使用 `docker search` 命令来搜索镜像.比如需要一个 httpd 的镜像来作为web服务,可以通过 `docker search` 命令搜索 httpd 来寻找合适的镜像.
+可以从 Docker Hub 网站来搜索镜像, Docker Hub 网址为: <https://hub.docker.com/> 也可以使用 `docker search` 命令来搜索镜像.比如需要一个 httpd 的镜像来作为 web 服务,可以通过 `docker search` 命令搜索 httpd 来寻找合适的镜像.
 
 ```bash
 docker search httpd
@@ -101,7 +101,7 @@ docker run -t -i ubuntu /bin/bash
 
 在运行的容器内使用 `apt-get update` 命令进行更新.
 在完成操作之后,输入 `exit` 命令来退出这个容器.
-此时ID为245c3476f636的容器,是按照需求更改的容器,可以使用命令 `docker commit` 来提交容器副本.
+此时 ID 为 245c3476f636 的容器,是按照需求更改的容器,可以使用命令 `docker commit` 来提交容器副本.
 
 ```bash
 docker commit -m="has update" -a="shisen" 245c3476f636 sen/ubuntu:v2
@@ -113,14 +113,14 @@ docker commit -m="has update" -a="shisen" 245c3476f636 sen/ubuntu:v2
 
 - -m : 提交的描述信息
 - -a : 指定镜像的作者
-- 245c3476f636 : 容器ID
+- 245c3476f636 : 容器 ID
 - sen/ubuntu:v2 : 指定要创建的目标镜像名
 
 可以使用 `docker images` 命令来查看新镜像 sen/ubuntu:v2
 
 ![iamge](images/1539572623.png)
 
-使用新镜像sen/ubuntu 来启动一个容器
+使用新镜像 sen/ubuntu 来启动一个容器
 
 ```bash
 docker run -t -i sen/ubuntu:v2 /bin/bash
@@ -148,9 +148,9 @@ CMD     /usr/sbin/sshd -D
 
 每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。
 
-第一条FROM，指定使用哪个镜像源
+第一条 FROM，指定使用哪个镜像源
 
-RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。
+RUN 指令告诉 docker 在镜像内执行命令，安装了什么。。。
 
 然后，使用 Dockerfile 文件，通过 `docker build` 命令来构建一个镜像。
 
@@ -159,7 +159,7 @@ RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。
 参数说明:
 
 - -t : 指定要创建的目标镜像名
-- . : Dockerfile 文件所在的目录.可以指定Dockerfile的绝对路径
+- . : Dockerfile 文件所在的目录.可以指定 Dockerfile 的绝对路径
 
 使用 `docker images` 查看创建的镜像,已经存在列表中.镜像 ID 为: 6eb1b5c84ed7
 
