@@ -80,3 +80,51 @@ aria2 是一个轻量级的多协议和多源命令行 下载实用程序。它�
   ```shell
       -d, --dir=<DIR>
   ```
+
+
+## 配置AriaNg
+
+- 新建配置文件aria2.conf
+  ```conf
+  dir=/root/aria2/aria2download
+  disable-ipv6=true
+
+  #打开rpc的目的是为了给web管理端用
+  enable-rpc=true
+  rpc-allow-origin-all=true
+  rpc-listen-all=true
+  rpc-listen-port=6800
+  #断点续传
+  continue=true
+  input-file=/root/aria2/aria2.session
+  save-session=/root/aria2/aria2.session
+
+  #最大同时下载任务数
+  max-concurrent-downloads=20
+  save-session-interval=120
+
+  # Http/FTP 相关
+  connect-timeout=120
+  #lowest-speed-limit=10K
+  #同服务器连接数
+  max-connection-per-server=10
+  #max-file-not-found=2
+  #最小文件分片大小, 下载线程数上限取决于能分出多少片, 对于小文件重要
+  min-split-size=10M
+
+  #单文件最大线程数, 路由建议值: 5
+  split=10
+  check-certificate=false
+  #http-no-cache=true
+
+  #设置为0, BT文件下载完成后,不会进行做种
+  seed-time=0`
+  ```
+- 启动
+  ```bash
+  aria2c --conf-path=/root/aria2/aria2.conf -D
+  ```
+- 配置AriaNg webUI
+  - http://aria2.net/
+  - Basic Settings -> Language -> 简体中文
+  - RPC -> Aria2 RPC 地址 -> 更新
